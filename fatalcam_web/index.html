@@ -3,39 +3,51 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#263238">
+<meta name="theme-color" content="#141014">
 <title>Fatal Cam</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-  /* Paleta da Fatal Model (fatalmodel.com), a mesma do fatalcam_api */
-  :root { --coral: #e25352; --coral-escuro: #c04657; --grafite: #263238; --cinza: #eceff1; --borda: #cfd8dc; --texto2: #5d7a89; --verde: #2e7d32; --verde-claro: #e8f5e9; }
+  /* Mesma paleta e tipografia do deck do pitch */
+  :root { --fundo: #141014; --cartao: #221a21; --borda: #3a2e36; --vinho: #2a1520; --rosa: #f0245a; --rosa-escuro: #c81d4b; --rosa-claro: #ff8fab; --texto: #f6f1f3; --texto2: #b9aeb4; --texto3: #8c8288; }
   * { box-sizing: border-box; margin: 0; -webkit-tap-highlight-color: transparent; }
   [hidden] { display: none !important; }
-  body { font-family: Montserrat, system-ui, sans-serif; background: var(--cinza); color: var(--grafite); min-height: 100vh; }
-  header { background: var(--grafite); color: #fff; padding: 16px; padding-top: max(16px, env(safe-area-inset-top)); display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 800; font-size: 22px; }
-  header span { color: var(--coral); }
-  header svg { width: 28px; height: 28px; }
+  body { font-family: 'DM Sans', system-ui, sans-serif; background: radial-gradient(circle at 85% 0%, #3a1226 0%, var(--fundo) 55%) fixed, var(--fundo); color: var(--texto); min-height: 100vh; }
+  header { padding: 18px 16px; padding-top: max(18px, env(safe-area-inset-top)); display: flex; align-items: center; justify-content: center; gap: 8px; font-family: Montserrat, sans-serif; font-weight: 900; font-size: 22px; letter-spacing: -.5px; border-bottom: 1px solid var(--borda); }
+  header span { color: var(--rosa); }
+  header svg { width: 28px; height: 28px; color: var(--rosa); }
   main { max-width: 480px; margin: 0 auto; padding: 20px 16px 32px; }
-  .card { background: #fff; border-radius: 1rem; padding: 24px 20px; text-align: center; box-shadow: 0 1px 3px #26323814; }
+  .card { background: var(--cartao); border: 1px solid var(--borda); border-radius: 1rem; padding: 24px 20px; text-align: center; }
   .card + .card { margin-top: 16px; }
-  .numero { display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--coral); color: #fff; font-weight: 800; }
-  h1 { font-size: 22px; font-weight: 700; margin: 8px 0 4px; }
-  p { color: var(--texto2); line-height: 1.5; font-size: 14px; }
-  .botao { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: 60px; margin-top: 16px; background: var(--coral); color: #fff; border: 0; font: inherit; font-weight: 700; font-size: 18px; padding: 16px; border-radius: 9999px; text-decoration: none; cursor: pointer; }
-  .botao:active { background: var(--coral-escuro); }
+  .numero { font-size: 12px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--rosa); }
+  h1 { font-family: Montserrat, sans-serif; font-size: 24px; font-weight: 800; margin: 6px 0 6px; }
+  p { color: var(--texto2); line-height: 1.5; font-size: 15px; }
+  .botao { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: 60px; margin-top: 18px; background: var(--rosa); color: #fff; border: 0; font: inherit; font-weight: 700; font-size: 18px; padding: 16px; border-radius: 9999px; text-decoration: none; cursor: pointer; }
+  .botao:active { background: var(--rosa-escuro); }
   .botao:disabled { opacity: .55; }
   .botao svg { width: 24px; height: 24px; flex: none; }
-  .botao.escuro { background: var(--grafite); }
+  .botao.escuro { background: transparent; color: var(--texto); border: 1.5px solid var(--borda); }
   .status { font-size: 13px; margin-top: 12px; min-height: 1.4em; color: var(--texto2); }
-  .status.erro { color: var(--coral-escuro); font-weight: 600; }
-  .previa { max-width: 100%; max-height: 200px; border-radius: .75rem; margin: 16px auto 0; display: block; }
+  .status.erro { color: var(--rosa-claro); font-weight: 700; }
+  .previa { max-width: 100%; max-height: 220px; border-radius: .75rem; margin: 16px auto 0; display: block; border: 1px solid var(--borda); }
   input[type=file] { display: none; }
-  .resultado { margin-top: 16px; padding: 28px 18px; border-radius: 1rem; }
-  .resultado svg { width: 64px; height: 64px; }
-  .resultado div { font-size: 26px; font-weight: 800; margin-top: 6px; }
-  .resultado.ok { background: var(--verde-claro); color: var(--verde); }
-  .resultado.nao { background: var(--cinza); color: var(--texto2); }
+
+  /* resultado do teste: tela cheia, a pessoa fecha para testar de novo */
+  .resultado { position: fixed; inset: 0; z-index: 10; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; padding: 32px 24px; padding-bottom: max(32px, env(safe-area-inset-bottom)); text-align: center; animation: entra .25s ease-out; }
+  .resultado.ok { background: radial-gradient(circle at 50% 38%, #6a1736 0%, var(--fundo) 70%); }
+  .resultado.nao { background: radial-gradient(circle at 50% 38%, #2c2630 0%, var(--fundo) 70%); }
+  .resultado .icone { width: 132px; height: 132px; }
+  .resultado.ok .icone { color: var(--rosa); }
+  .resultado.nao .icone { color: var(--texto3); }
+  .resultado .rotulo { font-size: 13px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; }
+  .resultado.ok .rotulo { color: var(--rosa); }
+  .resultado.nao .rotulo { color: var(--texto3); }
+  .resultado h2 { font-family: Montserrat, sans-serif; font-size: 34px; font-weight: 900; line-height: 1.1; letter-spacing: -.5px; max-width: 340px; }
+  .resultado p { max-width: 320px; }
+  .resultado .botao { max-width: 340px; margin-top: 10px; }
+  .resultado .fechar { position: absolute; top: max(16px, env(safe-area-inset-top)); right: 16px; width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--borda); background: #00000040; color: var(--texto); display: grid; place-items: center; cursor: pointer; }
+  .resultado .fechar svg { width: 22px; height: 22px; }
+  @keyframes entra { from { opacity: 0; transform: scale(.97); } to { opacity: 1; transform: none; } }
 </style>
 </head>
 <body>
@@ -45,7 +57,7 @@
 </header>
 <main>
   <section class="card">
-    <span class="numero">1</span>
+    <span class="numero">Passo 1</span>
     <h1>Tirar foto</h1>
     <p>A foto sai com um código invisível gravado nos pixels.</p>
     <input type="file" id="foto" accept="image/*" capture="environment">
@@ -62,7 +74,7 @@
   </section>
 
   <section class="card">
-    <span class="numero">2</span>
+    <span class="numero">Passo 2</span>
     <h1>Testar foto</h1>
     <p>Escolha uma foto da galeria para ver se ela tem o selo.</p>
     <input type="file" id="imagem" accept="image/*">
@@ -139,8 +151,37 @@
   };
 
   // ------------------------------------------------------------ 2. testar foto
-  const ICONE_OK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>';
-  const ICONE_NAO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6M9 9l6 6"/></svg>';
+  const ICONE_OK = '<svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/></svg>';
+  const ICONE_NAO = '<svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6M9 9l6 6"/></svg>';
+  const ICONE_FECHAR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>';
+  const RESULTADO = {
+    ok: { rotulo: "Código encontrado", titulo: "Verificado com segurança", texto: "Esta foto tem o código de segurança da Fatal Cam, mesmo se for um print." },
+    nao: { rotulo: "Sem código", titulo: "Código não encontrado", texto: "Esta foto não foi tirada pela Fatal Cam." },
+  };
+
+  // ao fechar o resultado, o passo 1 volta ao inicio para a proxima pessoa testar do zero
+  function limparFoto() {
+    if ($("baixar").href) URL.revokeObjectURL($("baixar").href);
+    $("baixar").removeAttribute("href");
+    $("baixar").hidden = true;
+    $("previa").removeAttribute("src");
+    $("previa").hidden = true;
+    status("status-foto", "");
+  }
+  const fecharResultado = () => { $("resultado").hidden = true; limparFoto(); };
+  document.addEventListener("keydown", e => { if (e.key === "Escape") fecharResultado(); });
+
+  function mostrarResultado(ok) {
+    const r = RESULTADO[ok ? "ok" : "nao"];
+    $("resultado").className = "resultado " + (ok ? "ok" : "nao");
+    $("resultado").innerHTML = `<button class="fechar" aria-label="Fechar">${ICONE_FECHAR}</button>`
+      + (ok ? ICONE_OK : ICONE_NAO)
+      + `<div class="rotulo">${r.rotulo}</div><h2>${r.titulo}</h2><p>${r.texto}</p>`
+      + `<button class="botao" id="testar-outra">Testar outra foto</button>`;
+    $("resultado").querySelector(".fechar").onclick = fecharResultado;
+    $("testar-outra").onclick = () => { fecharResultado(); $("imagem").click(); };
+    $("resultado").hidden = false;
+  }
 
   $("btn-testar").onclick = () => $("imagem").click();
   $("imagem").onchange = async () => {
@@ -153,10 +194,7 @@
       status("status-teste", "Procurando o selo... (na primeira vez demora um pouco)");
       const canvas = await abrir(arquivo);
       const texto = await new Marca(ort, null, await sessao("decoder_Q")).ler(pixels(canvas));
-      const ok = texto === CODIGO;
-      $("resultado").className = "resultado " + (ok ? "ok" : "nao");
-      $("resultado").innerHTML = (ok ? ICONE_OK : ICONE_NAO) + `<div>${ok ? "Verificado com segurança" : "Código não encontrado"}</div>`;
-      $("resultado").hidden = false;
+      mostrarResultado(texto === CODIGO);
       status("status-teste", "");
     } catch (e) {
       status("status-teste", "Não deu para ler a foto: " + e.message, true);
