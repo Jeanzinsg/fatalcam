@@ -1,0 +1,9 @@
+# PDFs do pitch ficam fora do repositorio
+*.pdf
+
+# certificado de teste gerado pelo servir.py
+fatalcam_web/ferramentas/cert/
+
+__pycache__/
+*.pyc
+.vercel/

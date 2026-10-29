@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#263238">
+<title>Fatal Cam</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* Paleta da Fatal Model (fatalmodel.com), a mesma do fatalcam_api */
+  :root { --coral: #e25352; --coral-escuro: #c04657; --grafite: #263238; --cinza: #eceff1; --borda: #cfd8dc; --texto2: #5d7a89; --verde: #2e7d32; --verde-claro: #e8f5e9; }
+  * { box-sizing: border-box; margin: 0; -webkit-tap-highlight-color: transparent; }
+  [hidden] { display: none !important; }
+  body { font-family: Montserrat, system-ui, sans-serif; background: var(--cinza); color: var(--grafite); min-height: 100vh; }
+  header { background: var(--grafite); color: #fff; padding: 16px; padding-top: max(16px, env(safe-area-inset-top)); display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 800; font-size: 22px; }
+  header span { color: var(--coral); }
+  header svg { width: 28px; height: 28px; }
+  main { max-width: 480px; margin: 0 auto; padding: 20px 16px 32px; }
+  .card { background: #fff; border-radius: 1rem; padding: 24px 20px; text-align: center; box-shadow: 0 1px 3px #26323814; }
+  .card + .card { margin-top: 16px; }
+  .numero { display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--coral); color: #fff; font-weight: 800; }
+  h1 { font-size: 22px; font-weight: 700; margin: 8px 0 4px; }
+  p { color: var(--texto2); line-height: 1.5; font-size: 14px; }
+  .botao { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: 60px; margin-top: 16px; background: var(--coral); color: #fff; border: 0; font: inherit; font-weight: 700; font-size: 18px; padding: 16px; border-radius: 9999px; text-decoration: none; cursor: pointer; }
+  .botao:active { background: var(--coral-escuro); }
+  .botao:disabled { opacity: .55; }
+  .botao svg { width: 24px; height: 24px; flex: none; }
+  .botao.escuro { background: var(--grafite); }
+  .status { font-size: 13px; margin-top: 12px; min-height: 1.4em; color: var(--texto2); }
+  .status.erro { color: var(--coral-escuro); font-weight: 600; }
+  .previa { max-width: 100%; max-height: 200px; border-radius: .75rem; margin: 16px auto 0; display: block; }
+  input[type=file] { display: none; }
+  .resultado { margin-top: 16px; padding: 28px 18px; border-radius: 1rem; }
+  .resultado svg { width: 64px; height: 64px; }
+  .resultado div { font-size: 26px; font-weight: 800; margin-top: 6px; }
+  .resultado.ok { background: var(--verde-claro); color: var(--verde); }
+  .resultado.nao { background: var(--cinza); color: var(--texto2); }
+</style>
+</head>
+<body>
+<header>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3.5"/></svg>
+  <div>fatal<span>cam</span></div>
+</header>
+<main>
+  <section class="card">
+    <span class="numero">1</span>
+    <h1>Tirar foto</h1>
+    <p>A foto sai com um código invisível gravado nos pixels.</p>
+    <input type="file" id="foto" accept="image/*" capture="environment">
+    <button class="botao" id="btn-foto">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3.5"/></svg>
+      Tirar foto
+    </button>
+    <p class="status" id="status-foto"></p>
+    <img class="previa" id="previa" alt="Foto com selo" hidden>
+    <a class="botao escuro" id="baixar" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+      Baixar foto
+    </a>
+  </section>
+
+  <section class="card">
+    <span class="numero">2</span>
+    <h1>Testar foto</h1>
+    <p>Escolha uma foto da galeria para ver se ela tem o selo.</p>
+    <input type="file" id="imagem" accept="image/*">
+    <button class="botao" id="btn-testar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></svg>
+      Testar foto
+    </button>
+    <p class="status" id="status-teste"></p>
+    <div id="resultado" hidden></div>
+  </section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.20.1/dist/ort.min.js"></script>
+<script type="module">
+  import { Marca } from "./marca.js";
+
+  const CODIGO = "FATALCAM";      // o que vai gravado na foto (maximo 8 caracteres)
+  const MAX_LADO = 4096;          // mesmo limite do fatalcam_api; tambem evita estourar o canvas do iPhone
+  const ort = window.ort;
+  ort.env.wasm.wasmPaths = "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.20.1/dist/";
+  const $ = id => document.getElementById(id);
+
+  const sessoes = {};
+  const sessao = nome => (sessoes[nome] ??= ort.InferenceSession.create(`modelos/${nome}.onnx`, { executionProviders: ["wasm"] })
+    .catch(e => { delete sessoes[nome]; throw e; }));
+  const status = (id, texto, erro) => { $(id).textContent = texto; $(id).classList.toggle("erro", !!erro); };
+
+  // <img> aplica a rotacao do EXIF, como o exif_transpose do fatalcam_api
+  async function abrir(arquivo) {
+    const url = URL.createObjectURL(arquivo);
+    try {
+      const img = new Image();
+      img.src = url;
+      await img.decode();
+      const escala = Math.min(1, MAX_LADO / Math.max(img.naturalWidth, img.naturalHeight));
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.round(img.naturalWidth * escala);
+      canvas.height = Math.round(img.naturalHeight * escala);
+      canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+      return canvas;
+    } finally {
+      URL.revokeObjectURL(url);
+    }
+  }
+  const pixels = canvas => canvas.getContext("2d").getImageData(0, 0, canvas.width, canvas.height);
+
+  // ------------------------------------------------------------ 1. tirar foto
+  $("btn-foto").onclick = () => $("foto").click();
+  $("foto").onchange = async () => {
+    const arquivo = $("foto").files[0];
+    $("foto").value = "";
+    if (!arquivo) return;
+    $("btn-foto").disabled = true;
+    try {
+      status("status-foto", "Gravando o selo... (na primeira vez demora um pouco)");
+      const canvas = await abrir(arquivo);
+      const img = pixels(canvas);
+      await new Marca(ort, await sessao("encoder_Q"), null).gravar(img, CODIGO);
+      canvas.getContext("2d").putImageData(img, 0, 0);
+      const blob = await new Promise(ok => canvas.toBlob(ok, "image/jpeg", 0.95));
+      if ($("baixar").href) URL.revokeObjectURL($("baixar").href);
+      const url = URL.createObjectURL(blob);
+      $("previa").src = url;
+      $("previa").hidden = false;
+      $("baixar").href = url;
+      $("baixar").download = `fatalcam_${Date.now() % 100000}.jpg`;
+      $("baixar").hidden = false;
+      status("status-foto", "Pronto! Baixe a foto e teste no passo 2.");
+    } catch (e) {
+      status("status-foto", "Não deu para gravar o selo: " + e.message, true);
+    } finally {
+      $("btn-foto").disabled = false;
+    }
+  };
+
+  // ------------------------------------------------------------ 2. testar foto
+  const ICONE_OK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>';
+  const ICONE_NAO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6M9 9l6 6"/></svg>';
+
+  $("btn-testar").onclick = () => $("imagem").click();
+  $("imagem").onchange = async () => {
+    const arquivo = $("imagem").files[0];
+    $("imagem").value = "";
+    if (!arquivo) return;
+    $("resultado").hidden = true;
+    $("btn-testar").disabled = true;
+    try {
+      status("status-teste", "Procurando o selo... (na primeira vez demora um pouco)");
+      const canvas = await abrir(arquivo);
+      const texto = await new Marca(ort, null, await sessao("decoder_Q")).ler(pixels(canvas));
+      const ok = texto === CODIGO;
+      $("resultado").className = "resultado " + (ok ? "ok" : "nao");
+      $("resultado").innerHTML = (ok ? ICONE_OK : ICONE_NAO) + `<div>${ok ? "Verificado com segurança" : "Código não encontrado"}</div>`;
+      $("resultado").hidden = false;
+      status("status-teste", "");
+    } catch (e) {
+      status("status-teste", "Não deu para ler a foto: " + e.message, true);
+    } finally {
+      $("btn-testar").disabled = false;
+    }
+  };
+</script>
+</body>
+</html>

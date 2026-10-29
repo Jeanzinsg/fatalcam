@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#263238">
+<title>Fatal Cam</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* Paleta da Fatal Model (fatalmodel.com) */
+  :root { --coral: #e25352; --coral-escuro: #c04657; --grafite: #263238; --cinza: #eceff1; --borda: #cfd8dc; --texto2: #5d7a89; --verde: #43a047; --verde-claro: #e8f5e9; }
+  * { box-sizing: border-box; margin: 0; }
+  [hidden] { display: none !important; }
+  body { font-family: Montserrat, system-ui, sans-serif; background: var(--cinza); color: var(--grafite); min-height: 100vh; }
+  header { background: var(--grafite); color: #fff; padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; }
+  .logo { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 20px; letter-spacing: -.3px; }
+  .logo span { color: var(--coral); }
+  .logo svg { width: 26px; height: 26px; }
+  .chip { font-size: 12px; font-weight: 600; background: #ffffff1a; padding: 6px 12px; border-radius: 9999px; }
+  main { max-width: 440px; margin: 0 auto; padding: 20px 16px 32px; }
+  .passos { display: flex; gap: 6px; margin-bottom: 16px; }
+  .passos div { flex: 1; height: 4px; border-radius: 9999px; background: var(--borda); transition: background .3s; }
+  .passos div.feito { background: var(--coral); }
+  .card { background: #fff; border-radius: 1rem; padding: 24px 20px; text-align: center; box-shadow: 0 1px 3px #26323814; }
+  .tela { display: none; }
+  .tela.ativa { display: block; }
+  .rotulo { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; color: var(--coral); }
+  h1 { font-size: 21px; font-weight: 700; margin: 6px 0 8px; line-height: 1.3; }
+  p { color: var(--texto2); line-height: 1.55; font-size: 14px; }
+  .botao { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; margin-top: 24px; background: var(--coral); color: #fff; border: 0; font: inherit; font-weight: 700; font-size: 15px; padding: 15px; border-radius: 9999px; text-decoration: none; cursor: pointer; }
+  .botao:active { background: var(--coral-escuro); }
+  .botao:disabled { opacity: .55; }
+  .botao svg { width: 20px; height: 20px; }
+  .icone-grande { width: 72px; height: 72px; margin: 4px auto 12px; border-radius: 50%; display: grid; place-items: center; }
+  .icone-grande svg { width: 36px; height: 36px; }
+  .icone-grande.coral { background: #fae3e3; color: var(--coral); }
+  .icone-grande.verde { background: var(--verde-claro); color: var(--verde); }
+  .erro { color: var(--coral-escuro); margin-top: 16px; font-weight: 600; }
+  .selo { display: inline-flex; align-items: center; gap: 6px; background: var(--verde-claro); color: var(--verde); font-weight: 700; font-size: 14px; padding: 8px 14px; border-radius: 9999px; }
+  .selo svg { width: 18px; height: 18px; }
+  .selo.nivel2 { background: #fff8e1; color: #a87900; }
+  .previa { width: 100%; border-radius: .75rem; margin-top: 16px; display: block; }
+  .nota { font-size: 12px; margin-top: 14px; }
+  input[type=file] { display: none; }
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3.5"/></svg>
+    <div>fatal<span>cam</span></div>
+  </div>
+  <div class="chip" id="chip-perfil" hidden></div>
+</header>
+<main>
+  <div class="passos" id="passos"><div></div><div></div></div>
+
+  <div class="card">
+    <section id="sem-perfil" class="tela">
+      <div class="icone-grande coral">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+      </div>
+      <h1>Abra a Fatal Cam pelo seu anúncio</h1>
+      <p>A Fatal Cam precisa saber de qual perfil a foto vai sair.</p>
+    </section>
+
+    <section id="camera" class="tela">
+      <div class="rotulo">Passo 1 de 2</div>
+      <div class="icone-grande coral" id="icone-origem"></div>
+      <h1 id="titulo-origem">Tire sua foto</h1>
+      <p id="texto-origem">Selo nível 1: foto tirada na hora. O selo do seu perfil vai ser gravado nos pixels, invisível a olho nu.</p>
+      <!-- nivel 1: capture abre direto a camera no celular, sem opcao de galeria.
+           nivel 2: o JS tira o capture e o celular abre a galeria. -->
+      <input type="file" id="foto" accept="image/*" capture="environment">
+      <button class="botao" id="btn-foto">
+        <span id="icone-botao"></span>
+        <span id="rotulo-botao">Abrir câmera</span>
+      </button>
+      <p class="erro" id="erro"></p>
+    </section>
+
+    <section id="final" class="tela">
+      <div class="rotulo">Passo 2 de 2</div>
+      <div class="selo" id="selo" style="margin-top:10px">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+        <span id="selo-texto">Foto com origem verificada</span>
+      </div>
+      <img class="previa" id="previa" alt="Foto marcada">
+      <a class="botao" id="baixar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        Baixar foto
+      </a>
+      <p class="nota" id="nota"></p>
+    </section>
+  </div>
+</main>
+<script>
+  const params = new URLSearchParams(location.search);
+  const perfil = params.get("perfil") || "";
+  const nivel = params.get("nivel") === "2" ? 2 : 1;  // 1 = camera, 2 = galeria
+  const $ = id => document.getElementById(id);
+  const ICONE = {
+    1: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3.5"/></svg>',
+    2: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></svg>',
+  };
+  const ROTULO_BOTAO = { 1: "Abrir câmera", 2: "Abrir galeria" };
+  const SELO = { 1: "Selo nível 1 · Foto tirada na hora", 2: "Selo nível 2 · Foto da galeria" };
+
+  $("icone-origem").innerHTML = ICONE[nivel];
+  $("icone-botao").innerHTML = ICONE[nivel];
+  $("rotulo-botao").textContent = ROTULO_BOTAO[nivel];
+  if (nivel === 2) {
+    $("foto").removeAttribute("capture");
+    $("titulo-origem").textContent = "Escolha uma foto da galeria";
+    $("texto-origem").textContent = "Selo nível 2: foto que você já tinha. Para o selo nível 1, tire a foto na hora pela Fatal Cam.";
+  }
+  const PASSO = { "sem-perfil": 0, camera: 1, final: 2 };
+  const mostrar = id => {
+    document.querySelectorAll(".tela").forEach(t => t.classList.remove("ativa"));
+    $(id).classList.add("ativa");
+    [...$("passos").children].forEach((d, i) => d.classList.toggle("feito", i < PASSO[id]));
+  };
+
+  // mesmo formato do backend: ate 7 letras maiusculas ou numeros (o 8o caractere da marca e o nivel)
+  if (/^[A-Z0-9]{1,7}$/.test(perfil)) {
+    $("chip-perfil").textContent = "Perfil " + perfil;
+    $("chip-perfil").hidden = false;
+    mostrar("camera");
+  } else {
+    $("passos").hidden = true;
+    mostrar("sem-perfil");
+  }
+
+  $("btn-foto").onclick = () => $("foto").click();
+
+  $("foto").onchange = async () => {
+    const arquivo = $("foto").files[0];
+    if (!arquivo) return;
+    const rotulo = $("rotulo-botao");
+    $("erro").textContent = "";
+    $("btn-foto").disabled = true;
+    rotulo.textContent = "Gravando selo...";
+    try {
+      const dados = new FormData();
+      dados.append("perfil_id", perfil);
+      dados.append("nivel", nivel);
+      dados.append("foto", arquivo);
+      const r = await fetch("/marcar", { method: "POST", body: dados });
+      if (r.status === 409) throw new Error((await r.json()).detail);  // foto ja tem selo: ja foi usada
+      if (!r.ok) throw new Error("Não deu para gravar o selo: " + ((await r.json()).detail || r.status));
+      const blob = await r.blob();
+      const url = URL.createObjectURL(blob);
+      $("previa").src = url;
+      $("baixar").href = url;
+      $("baixar").download = `fatalcam_${perfil}.${blob.type === "image/png" ? "png" : "jpg"}`;
+      $("selo-texto").textContent = SELO[nivel];
+      $("selo").classList.toggle("nivel2", nivel === 2);
+      $("nota").textContent = `Perfil ${perfil} e selo nível ${nivel} gravados nos pixels. A foto não foi salva em nenhum servidor.`;
+      mostrar("final");
+    } catch (e) {
+      $("erro").textContent = e.message;
+    } finally {
+      $("btn-foto").disabled = false;
+      rotulo.textContent = ROTULO_BOTAO[nivel];
+      $("foto").value = "";
+    }
+  };
+</script>
+</body>
+</html>

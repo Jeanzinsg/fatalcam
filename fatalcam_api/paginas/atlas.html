@@ -1,0 +1,50 @@
+<!doctype html>
+<!--
+  MOCK DA ATLAS - SO PARA A DEMO.
+  Esta pagina finge ser um anuncio da Atlas para mostrar como a Fatal Cam e aberta.
+  Na integracao real ela some: a Atlas coloca o botao no anuncio dela e abre
+  /cam?perfil=<ID do perfil>. O perfil "Prestadora A" (A01) e fake.
+-->
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atlas (mock)</title>
+<style>
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: system-ui, sans-serif; background: #1a0b2e; color: #f3eaff; min-height: 100vh; }
+  .faixa { background: #f5c542; color: #1a0b2e; text-align: center; font-size: 12px; font-weight: 700; padding: 6px; }
+  header { padding: 16px 20px; font-size: 22px; font-weight: 800; letter-spacing: 1px; color: #c9a3ff; }
+  main { max-width: 440px; margin: 0 auto; padding: 0 16px 32px; }
+  .card { background: #2a1450; border-radius: 20px; overflow: hidden; }
+  .capa { height: 260px; background: linear-gradient(135deg, #7b2ff7, #c13584); display: grid; place-items: center; font-size: 72px; font-weight: 800; color: #ffffffcc; }
+  .info { padding: 20px; }
+  h1 { font-size: 24px; }
+  .meta { color: #b8a3d9; font-size: 14px; margin-top: 4px; }
+  .selo { display: inline-block; margin-top: 12px; background: #3d1f6e; color: #d9c2ff; font-size: 12px; padding: 4px 10px; border-radius: 99px; }
+  p { margin-top: 16px; color: #d9c9f0; line-height: 1.5; font-size: 15px; }
+  a.botao { display: block; margin-top: 24px; background: #8b3dff; color: #fff; text-align: center; text-decoration: none; font-weight: 700; padding: 16px; border-radius: 14px; font-size: 16px; }
+  a.botao:active { background: #6f22e0; }
+  a.botao small { display: block; font-size: 12px; font-weight: 500; opacity: .85; margin-top: 2px; }
+  a.botao.secundario { margin-top: 12px; background: transparent; border: 2px solid #8b3dff; color: #d9c2ff; }
+  a.botao.secundario:active { background: #3d1f6e; }
+</style>
+</head>
+<body>
+<div class="faixa">MOCK DA ATLAS - SÓ PARA DEMO</div>
+<header>atlas</header>
+<main>
+  <div class="card">
+    <div class="capa">A</div>
+    <div class="info">
+      <h1>Prestadora A</h1>
+      <div class="meta">Perfil A01 · Porto Alegre</div>
+      <span class="selo">✓ Perfil verificado</span>
+      <p>Adicione fotos com selo de origem verificada. O cliente sabe que a foto saiu do seu perfil, mesmo se alguém tirar print.</p>
+      <a class="botao" href="/cam?perfil=A01">Tirar foto agora com selo verificado<small>Selo nível 1 · mais prioridade</small></a>
+      <a class="botao secundario" href="/cam?perfil=A01&nivel=2">Adicionar foto da galeria<small>Selo nível 2</small></a>
+    </div>
+  </div>
+</main>
+</body>
+</html>
